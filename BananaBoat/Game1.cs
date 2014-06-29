@@ -38,6 +38,7 @@ namespace BananaBoat
 		protected override void Initialize()
 		{
 			// Initialize the render manager
+			GameManager.InitGameManager();
 			RenderManager.InitRenderManager(GraphicsDevice, this.Content);
 
 			base.Initialize();

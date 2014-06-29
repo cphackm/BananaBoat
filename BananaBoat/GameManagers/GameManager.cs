@@ -10,7 +10,24 @@ namespace BananaBoat.GameManagers
 {
 	public class GameManager
 	{
-		private static int nextObjectId = 0;
+		private static Dictionary<string, object> globalStates;
+		private static int nextObjectId;
+
+		public static void InitGameManager()
+		{
+			globalStates = new Dictionary<string, object>();
+			nextObjectId = 0;
+		}
+
+		public static void SetGlobalState(string Key, object Value)
+		{
+			globalStates.Add(Key, Value);
+		}
+
+		public static T GetGlobalState<T>(string Key)
+		{
+			return (T)globalStates[Key];
+		}
 
 		public static int GetNextObjectId()
 		{
