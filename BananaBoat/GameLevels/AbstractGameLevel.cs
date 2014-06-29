@@ -13,22 +13,58 @@ namespace BananaBoat.GameLevels
 {
 	public abstract class AbstractGameLevel
 	{
-		protected List<GameObjects.AbstractGameObject> objects;
-		protected Dictionary<string, GameObjects.AbstractGameObject> objectsByType;
+		protected static Dictionary<string, object> levelStates;
 
-		public virtual bool RegisterGameObject(GameObjects.AbstractGameObject GameObject)
+		protected List<AbstractGameObject> objects;
+		protected Dictionary<Type, List<AbstractGameObject>> objectsByType;
+
+		public static void SetLevelState(string Key, object Value)
+		{
+			if (levelStates.ContainsKey(Key))
+			{
+				levelStates[Key] = Value;
+			}
+			else
+			{
+				levelStates.Add(Key, Value);
+			}
+		}
+
+		public static T GetLevelState<T>(string Key)
+		{
+			return (T)levelStates[Key];
+		}
+
+		public virtual bool RegisterGameObject(AbstractGameObject GameObject)
 		{
 			GameObject.id = GameManagers.GameManager.GetNextObjectId();
-
 			objects.Add(GameObject);
-			objectsByType.Add(GameObject.objectType, GameObject);
+
+			Type objType = GameObject.GetType();
+
+			if (!objectsByType.ContainsKey(objType))
+			{
+				objectsByType.Add(objType, new List<AbstractGameObject>());
+			}
+
+			objectsByType[objType].Add(GameObject);
 
 			return true;
 		}
 
+		public virtual T GetGameObjectById<T>(int Id) where T : AbstractGameObject
+		{
+			return (T)objects.Find(ago => ago.id == Id );
+		}
+
+		public virtual List<T> GetGameObjectsByType<T>() where T : AbstractGameObject
+		{
+			return objectsByType[typeof(T)].Cast<T>().ToList();
+		}
+
 		public virtual void Update()
 		{
-			foreach (GameObjects.AbstractGameObject ago in objects)
+			foreach (AbstractGameObject ago in objects)
 			{
 				ago.Update();
 			}
@@ -36,7 +72,7 @@ namespace BananaBoat.GameLevels
 
 		public virtual void Render()
 		{
-			foreach (GameObjects.AbstractGameObject ago in objects)
+			foreach (AbstractGameObject ago in objects)
 			{
 				ago.Render();
 			}
