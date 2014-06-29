@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using BananaBoat.GameManagers;
 using BananaBoat.GameLevels;
 using BananaBoat.GameObjects;
+using BananaBoat.GameChunks;
 #endregion
 
 namespace BananaBoat

@@ -15,8 +15,5 @@ namespace BananaBoat.GameObjects.GraphicalObjects
 		protected float angle { set; get; }
 		protected float scale { set; get; }
 		protected Color color { set; get; }
-
-		public abstract void Update();
-		public abstract void Render();
 	}
 }
