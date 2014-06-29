@@ -7,6 +7,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+
+using BananaBoat.GameManagers;
+using BananaBoat.GameLevels;
+using BananaBoat.GameObjects;
 #endregion
 
 namespace BananaBoat
@@ -17,7 +21,6 @@ namespace BananaBoat
 	public class Game1 : Game
 	{
 		GraphicsDeviceManager graphics;
-		SpriteBatch spriteBatch;
 
 		public Game1()
 			: base()
@@ -34,7 +37,8 @@ namespace BananaBoat
 		/// </summary>
 		protected override void Initialize()
 		{
-			// TODO: Add your initialization logic here
+			// Initialize the render manager
+			RenderManager.InitRenderManager(GraphicsDevice, this.Content);
 
 			base.Initialize();
 		}
@@ -45,10 +49,6 @@ namespace BananaBoat
 		/// </summary>
 		protected override void LoadContent()
 		{
-			// Create a new SpriteBatch, which can be used to draw textures.
-			spriteBatch = new SpriteBatch(GraphicsDevice);
-
-			// TODO: use this.Content to load your game content here
 		}
 
 		/// <summary>
@@ -83,7 +83,9 @@ namespace BananaBoat
 		{
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
-			// TODO: Add your drawing code here
+			RenderManager.BeginRender();
+
+			RenderManager.EndRender();
 
 			base.Draw(gameTime);
 		}

@@ -10,11 +10,14 @@ namespace BananaBoat.GameObjects
 {
 	public abstract class AbstractGameObject
 	{
-		private int id { get; set; }
-		private float x { get; set; }
-		private float y { get; set; }
+		public string objectType;
 
-		public abstract bool Update();
-		public abstract bool Render();
+		public int id { get; set; }
+
+		protected float x { get; set; }
+		protected float y { get; set; }
+
+		public abstract void Update();
+		public abstract void Render();
 	}
 }
