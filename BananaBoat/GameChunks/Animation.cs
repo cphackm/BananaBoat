@@ -5,6 +5,8 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
+using BananaBoat.GameManagers;
+
 namespace BananaBoat.GameChunks
 {
 	public class Animation
@@ -30,28 +32,7 @@ namespace BananaBoat.GameChunks
 		[XmlArray("imagePoints")]
 		public List<int> imagePoints;
 
-		private int currentFrame;
-		private float frameDelay;
-		private float delayTarget;
-		private bool isPaused;
-		private float speedScale;
-
-		public Animation()
-		{
-			currentFrame = 0;
-			frameDelay = 0.0f;
-			delayTarget = 0.0f;
-			isPaused = false;
-			speedScale = 1.0f;
-		}
-
-		public void Update()
-		{
-		}
-
-		public void Render()
-		{
-		}
+		public Animation() { }
 
 		public static List<Animation> LoadAnimationsFromXml(string XmlPath)
 		{

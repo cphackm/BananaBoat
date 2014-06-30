@@ -6,14 +6,16 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
+using BananaBoat.GameManagers;
+
 namespace BananaBoat.GameObjects.GraphicalObjects
 {
 	public abstract class AbstractSpriteObject : AbstractGameObject
 	{
-		protected float x { set; get; }
-		protected float y { set; get; }
+		protected Vector2 position { set; get; }
 		protected float angle { set; get; }
-		protected float scale { set; get; }
+		protected Vector2 scale { set; get; }
 		protected Color color { set; get; }
+		protected RenderManager.BaseOriginKeys[] origin { set; get; }
 	}
 }

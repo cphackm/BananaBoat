@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
+using BananaBoat.GameChunks;
+
 namespace BananaBoat.GameManagers
 {
 	public class RenderManager
@@ -37,6 +39,7 @@ namespace BananaBoat.GameManagers
 		private static GraphicsDevice gd;
 		private static SpriteBatch spriteBatch;
 		private static Dictionary<string, Texture2D> textures;
+		private static Dictionary<string, Animation> animations;
 
 		public static void InitRenderManager(GraphicsDevice Gd, ContentManager Cm)
 		{
@@ -44,6 +47,7 @@ namespace BananaBoat.GameManagers
 			cm = Cm;
 			spriteBatch = new SpriteBatch(gd);
 			textures = new Dictionary<string, Texture2D>();
+			animations = new Dictionary<string, Animation>();
 		}
 
 		public static void LoadTexture(string TextureKey, string TexturePath)
@@ -54,9 +58,23 @@ namespace BananaBoat.GameManagers
 			}
 		}
 
+		public static void LoadAnimations(string AnimationsPath)
+		{
+			List<Animation> tempAnimations = Animation.LoadAnimationsFromXml(AnimationsPath);
+			foreach (Animation a in tempAnimations)
+			{
+				animations.Add(a.name, a);
+			}
+		}
+
 		public static Texture2D GetTexture(string TextureKey)
 		{
 			return textures[TextureKey];
+		}
+
+		public static Animation GetAnimation(string AnimationKey)
+		{
+			return animations[AnimationKey];
 		}
 
 		private static Vector2 CalculateOrigin(Texture2D Texture, BaseOriginKeys[] Origin)
@@ -88,6 +106,35 @@ namespace BananaBoat.GameManagers
 			return origin;
 		}
 
+		private static Vector2 CalculateOrigin(Rectangle SourceRect, BaseOriginKeys[] Origin)
+		{
+			Vector2 origin = Vector2.Zero;
+
+			if (Origin.Contains(BaseOriginKeys.top))
+			{
+				origin.Y = 0;
+			}
+			if (Origin.Contains(BaseOriginKeys.bottom))
+			{
+				origin.Y = SourceRect.Height;
+			}
+			if (Origin.Contains(BaseOriginKeys.left))
+			{
+				origin.X = 0;
+			}
+			if (Origin.Contains(BaseOriginKeys.right))
+			{
+				origin.X = SourceRect.Width;
+			}
+			if (Origin.Contains(BaseOriginKeys.center))
+			{
+				origin.X = SourceRect.Width / 2;
+				origin.Y = SourceRect.Height / 2;
+			}
+
+			return origin;
+		}
+
 		public static void BeginRender()
 		{
 			spriteBatch.Begin();
@@ -109,6 +156,20 @@ namespace BananaBoat.GameManagers
 				sourceRectangle: new Rectangle(0, 0, texture.Width, texture.Height), 
 				color: Color.White, 
 				scale: Scale, 
+				origin: origin);
+		}
+
+		public static void DrawQuad(string TextureKey, Vector2 Position, Rectangle SourceRect, Vector2 Scale, BaseOriginKeys[] Origin)
+		{
+			Texture2D texture = GetTexture(TextureKey);
+			Vector2 origin = CalculateOrigin(SourceRect, Origin);
+
+			spriteBatch.Draw(
+				texture,
+				position: Position,
+				sourceRectangle: SourceRect,
+				color: Color.White,
+				scale: Scale,
 				origin: origin);
 		}
 	}

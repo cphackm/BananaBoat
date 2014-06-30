@@ -21,7 +21,14 @@ namespace BananaBoat.GameManagers
 
 		public static void SetGlobalState(string Key, object Value)
 		{
-			globalStates.Add(Key, Value);
+			if (globalStates.ContainsKey(Key))
+			{
+				globalStates[Key] = Value;
+			}
+			else
+			{
+				globalStates.Add(Key, Value);
+			}
 		}
 
 		public static T GetGlobalState<T>(string Key)
@@ -32,6 +39,18 @@ namespace BananaBoat.GameManagers
 		public static int GetNextObjectId()
 		{
 			return nextObjectId++;
+		}
+
+		public static void UpdateGameManager(GameTime gameTime)
+		{
+			CalculateDeltaTime(gameTime);
+		}
+
+		private static void CalculateDeltaTime(GameTime gameTime)
+		{
+			float elapsedTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+			float dt = elapsedTime / 1000.0f;
+			SetGlobalState("DT", dt);
 		}
 	}
 }
