@@ -41,6 +41,9 @@ namespace BananaBoat
 			// Initialize the render manager
 			GameManager.InitGameManager();
 			RenderManager.InitRenderManager(GraphicsDevice, this.Content);
+			InputManager.InitInputManager();
+
+			InputManager.BindInputs("test", Keys.Space, Buttons.A, PlayerIndex.One);
 
 			base.Initialize();
 		}
@@ -51,6 +54,7 @@ namespace BananaBoat
 		/// </summary>
 		protected override void LoadContent()
 		{
+			RenderManager.LoadTexture("test", "walmartGuyRunWithGun");
 		}
 
 		/// <summary>
@@ -73,6 +77,7 @@ namespace BananaBoat
 				Exit();
 
 			GameManager.UpdateGameManager(gameTime);
+			InputManager.UpdateInputManager();
 
 			base.Update(gameTime);
 		}
@@ -86,6 +91,15 @@ namespace BananaBoat
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
 			RenderManager.BeginRender();
+
+			if (InputManager.IsInputHeld("test"))
+			{
+				RenderManager.DrawQuad("test", Vector2.Zero, Vector2.One, RenderManager.OriginKeys.topLeft);
+			}
+			if (InputManager.IsInputHit("test"))
+			{
+				RenderManager.DrawQuad("test", new Vector2(0.0f, 64.0f), Vector2.One, RenderManager.OriginKeys.topLeft);
+			}
 
 			RenderManager.EndRender();
 
